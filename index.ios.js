@@ -6,6 +6,8 @@
 
 import React, { Component } from 'react';
 import {
+  Animated,
+  PanResponder,
   AppRegistry,
   StyleSheet,
   Text,
@@ -17,6 +19,8 @@ import {
   LayoutAnimation
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient'
+
+let AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
 
 let cardsMap = {
   'question': {
@@ -41,7 +45,27 @@ class Shroom extends Component {
     this.state = {
       reactionCount: 5,
       isDocked: true,
+      scroll: true,
+      pan: new Animated.ValueXY(),
     }
+  }
+
+  componentWillMount() {
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onPanResponderGrant: () => this.setState({scroll: false}),
+      onPanResponderMove: Animated.event([null, {dx: this.state.pan.x, dy: this.state.pan.y}]),
+      onPanResponderRelease: () => this.setState({scroll: true})
+    })
+  }
+
+  componentDidMount() {
+    this.state.pan.addListener((value) => {  // Async listener for state changes  (step1: uncomment)
+      console.log(value)
+    });
   }
 
   renderCard(meta) {
@@ -125,10 +149,13 @@ class Shroom extends Component {
   }
 
   render() {
+    let {
+      pan
+    } = this.state
+
     return (
       <View style={styles.box}>
-
-        <ScrollView
+        <AnimatedScrollView
           horizontal={true}
           pagingEnabled={!this.state.isDocked}
           style={[styles.container,{
@@ -153,6 +180,7 @@ class Shroom extends Component {
           //     translateY: this.state.isDocked ? 260 : 0,
           //   }],
           // }]}
+          {...this._panResponder.panHandlers}
         >
           {this.renderCard({
             type: 'update'
@@ -172,7 +200,7 @@ class Shroom extends Component {
           {this.renderCard({
             type: 'update'
           })}
-        </ScrollView>
+        </AnimatedScrollView>
       </View>
     );
   }
