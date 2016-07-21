@@ -35,18 +35,23 @@ let cardsMap = {
   }
 }
 
-let darkRed = "#A91400";
-let brightOrange = "#FF5505";
+let panDiff = 240;
 
 class Shroom extends Component {
   constructor(props) {
     super(props)
 
+    let pan = new Animated.ValueXY()
     this.state = {
       reactionCount: 5,
       isDocked: true,
       scroll: true,
-      pan: new Animated.ValueXY(),
+      pan: pan,
+      dockAnimation: pan.y.interpolate({
+        inputRange: [-panDiff, 0],
+        outputRange: [0, 1],
+        extrapolate: 'clamp'
+      })
     }
   }
 
@@ -63,18 +68,29 @@ class Shroom extends Component {
       onPanResponderRelease: () => {
         // this.setState({scroll: true})
 
-        if (this._pan.y < -100) {
+        if (Math.abs(this._pan.y) < panDiff / 3) {
+          // return
           Animated.spring(this.state.pan.y, {
-            toValue: -400
+            toValue: this.state.isDocked ? 0 : 0
           }).start();
         } else {
           Animated.spring(this.state.pan.y, {
-            toValue: 0
-          }).start(()=>{
+            toValue: this.state.isDocked ? (-panDiff) : panDiff
+          }).start(() => {
+
             this.setState({
-              isDocked: false
-            })
-          });          
+              isDocked: !this.state.isDocked,
+              dockAnimation: !this.state.isDocked ? this.state.pan.y.interpolate({
+                inputRange: [-panDiff, 0],
+                outputRange: [1, 0],
+                extrapolate: 'clamp'
+              }) : this.state.pan.y.interpolate({
+                inputRange: [0, panDiff],
+                outputRange: [0, 1],
+                extrapolate: 'clamp'
+              })
+            }); 
+          })         
         }
       }
     })
@@ -163,7 +179,9 @@ class Shroom extends Component {
               👏
             </Text>
           </TouchableHighlight>
-          <Text style={styles.reactionCount}>
+          <Text style={[styles.reactionCount, {
+              color: cardsMap[type].colorDark
+            }]}>
             {this.state.reactionCount}
           </Text>
         </View>
@@ -173,10 +191,6 @@ class Shroom extends Component {
   }
 
   render() {
-    let {
-      pan
-    } = this.state
-
     return (
       <View style={styles.box}>
         <AnimatedScrollView
@@ -184,43 +198,36 @@ class Shroom extends Component {
           pagingEnabled={!this.state.isDocked}
           scrollEnabled={this.state.scroll}
           style={[styles.container,{
-            borderWidth: 1,
-            borderColor: 'red',
-            width: this.state.pan.y.interpolate({
-              inputRange: [-300, 0],
+            // borderWidth: 1,
+            // borderColor: 'red',
+            width: this.state.dockAnimation.interpolate({
+              inputRange: [0, 1],
               outputRange: [Dimensions.get('window').width, Dimensions.get('window').width * 2],
-              extrapolate: 'clamp'
+              // extrapolate: 'clamp'
             }),
           }, {
             transform: [{
-              scale: this.state.pan.y.interpolate({
-                inputRange: [-300, 0],
+              scale: this.state.dockAnimation.interpolate({
+                inputRange: [0, 1],
                 outputRange: [1, 0.5],
-                extrapolate: 'clamp'
+                // extrapolate: 'clamp'
               }),
-            }, {
-              translateX: this.state.pan.y.interpolate({
-                inputRange: [-300, 0],
+            },
+            {
+              translateX: this.state.dockAnimation.interpolate({
+                inputRange: [0, 1],
                 outputRange: [0, -(Dimensions.get('window').width)],
-                extrapolate: 'clamp'
+                // extrapolate: 'clamp'
               }),
-            }, {
-              translateY: this.state.pan.y.interpolate({
-                inputRange: [-300, 0],
+            },
+            {
+              translateY: this.state.dockAnimation.interpolate({
+                inputRange: [0, 1],
                 outputRange: [0, (Dimensions.get('window').height/2)],
-                extrapolate: 'clamp'
+                // extrapolate: 'clamp'
               }),
             }],
           }]}
-          // style={[styles.container,{
-          //   transform: [{
-          //     scale: this.state.isDocked ? 0.5 : 1,
-          //   }, {
-          //     translateX: this.state.isDocked ? -150 : 0,
-          //   }, {
-          //     translateY: this.state.isDocked ? 260 : 0,
-          //   }],
-          // }]}
           {...this._panResponder.panHandlers}
         >
           {this.renderCard({
@@ -252,21 +259,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-
   container: {
     flex: 1,
-    // overflow: 'visible',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    
   },
   updateText: {
-    // fontFamily: 'Dosis',
     fontSize: 32,
     color: 'white',
     backgroundColor: 'transparent',
-    // fontWeight: 300,
-    // textAlign: 'center',
     margin: 20,
   },
   profilePicture: {
@@ -280,7 +279,6 @@ const styles = StyleSheet.create({
   displayName: {
     backgroundColor: 'transparent',
     color: 'white',
-    // textAlign: 'center',
     marginLeft: 0,
     marginTop: 22,
     fontSize: 20,
@@ -295,18 +293,15 @@ const styles = StyleSheet.create({
   badgeSection: {
     flex: 1,
     alignItems: 'flex-end',
-    // marginTop: 20,
     marginRight: 20,
     justifyContent: 'center'
   },
   badgeSlug: {
-    backgroundColor: brightOrange,
     borderRadius: 15,
     paddingVertical: 5,
     paddingHorizontal: 12,
   },
   badgeText: {
-    color: darkRed,
     textAlign: 'center',
     fontSize: 10,
     fontWeight: 'bold'
@@ -321,7 +316,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontSize: 50,
     padding: 10,
-    textShadowColor: darkRed,
     textShadowRadius: 10,
     textShadowOffset: {
       width: 5,
@@ -331,7 +325,6 @@ const styles = StyleSheet.create({
   reactionCount: {
     textAlign: 'center',
     backgroundColor: 'transparent',
-    color: darkRed,
     fontSize: 30,
     padding: 0,
   },
