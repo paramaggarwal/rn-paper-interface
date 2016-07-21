@@ -4,9 +4,11 @@ Implementation of Facebook Paper-like interactive UI in React Native.
 
 # Demo
 
+See it in action: [https://vimeo.com/175727390](https://vimeo.com/175727390)
+
 ![project demo](https://github.com/paramaggarwal/rn-paper-interface/raw/master/static/demo.gif)
 
-(The file above is a GIF animation of 2MB size. Please wait for it to load.)
+(The image above is a GIF animation that unfortunately does not loop. Please refresh the page to see it loop again.)
 
 # Try it out
 
