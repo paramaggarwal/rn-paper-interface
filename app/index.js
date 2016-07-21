@@ -6,14 +6,14 @@ import {
   Text,
   Image,
   View,
-  ScrollView,
+  ListView,
   Dimensions,
   TouchableHighlight,
   LayoutAnimation
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient'
-let AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
+let AnimatedListView = Animated.createAnimatedComponent(ListView)
 
 let Card = require('./feed/Card');
 let cards = require('./feed/mocks');
@@ -23,11 +23,13 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    let pan = new Animated.ValueXY()
+    let pan = new Animated.ValueXY();
+    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
     this.state = {
       isDocked: true,
-      scroll: true,
       pan: pan,
+      dataSource: ds.cloneWithRows(cards),
       dockAnimation: pan.y.interpolate({
         inputRange: [-panDiff, 0],
         outputRange: [0, 1],
@@ -42,19 +44,18 @@ class App extends Component {
       onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: () => {
-        // this.setState({scroll: false})
-      },
+      onPanResponderGrant: () => {},
       onPanResponderMove: Animated.event([null, {dx: this.state.pan.x, dy: this.state.pan.y}]),
-      onPanResponderRelease: () => {
-        // this.setState({scroll: true})
+      onPanResponderRelease: (evt, gestureState) => {
 
-        if (Math.abs(this._pan.y) < panDiff / 3) {
-          // return
+        let shouldToggle = this.state.isDocked ? (gestureState.dy > (panDiff/4)) : (gestureState.dy < (-panDiff/4))
+        if (shouldToggle) {
+          // return to original position
           Animated.spring(this.state.pan.y, {
             toValue: this.state.isDocked ? 0 : 0
           }).start();
         } else {
+          // toggle between docked and zoomed
           Animated.spring(this.state.pan.y, {
             toValue: this.state.isDocked ? (-panDiff) : panDiff
           }).start(() => {
@@ -75,18 +76,6 @@ class App extends Component {
         }
       }
     })
-  }
-
-  componentDidMount() {
-    this.state.pan.addListener((value) => {
-      // console.log(value)
-      this._pan = value
-    });
-  }
-
-  componentWillUnmount() {
-    this.state.pan.x.removeAllListeners();  
-    this.state.pan.y.removeAllListeners();
   }
 
   getListViewStyle() {
@@ -132,16 +121,16 @@ class App extends Component {
   render() {
     return (
       <View style={styles.box}>
-        <AnimatedScrollView
+        <AnimatedListView
           horizontal={true}
           pagingEnabled={!this.state.isDocked}
-          scrollEnabled={this.state.scroll}
-          directionalLockEnabled={true}
+
           style={this.getListViewStyle()}
           {...this._panResponder.panHandlers}
-        >
-          {cards.map((c, i) => <Card key={i} data={c} />)}
-        </AnimatedScrollView>
+
+          dataSource={this.state.dataSource}
+          renderRow={(rowData, i) => <Card key={i} data={rowData} />}
+        />
       </View>
     );
   }
