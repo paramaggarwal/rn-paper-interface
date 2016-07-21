@@ -48,8 +48,8 @@ class App extends Component {
       onPanResponderMove: Animated.event([null, {dx: this.state.pan.x, dy: this.state.pan.y}]),
       onPanResponderRelease: (evt, gestureState) => {
 
-        let shouldToggle = this.state.isDocked ? (gestureState.dy > (panDiff/4)) : (gestureState.dy < (-panDiff/4))
-        if (shouldToggle) {
+        let shouldToggle = this.state.isDocked ? (gestureState.dy < (-panDiff/3)) : (gestureState.dy > (panDiff/3))
+        if (!shouldToggle) {
           // return to original position
           Animated.spring(this.state.pan.y, {
             toValue: this.state.isDocked ? 0 : 0
