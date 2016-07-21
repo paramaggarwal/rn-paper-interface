@@ -6,7 +6,7 @@ let cards = [
       picture: 'http://lorempixel.com/80/80/people/1/',
     },
     card: {
-      text: "I just got a call. Tomorrow's Signals class is cancelled"
+      text: "I am working on implementing Facebook Paper like interactions today."
     }
   },
   {
@@ -17,7 +17,7 @@ let cards = [
     },
     card: {
       image: "http://i.imgur.com/iliFxTz.jpg",
-      text: "Kurkure finally available in the canteen again!"
+      text: "Gotta munch on some thing while I get this to work."
     }
   },
   {
@@ -27,7 +27,7 @@ let cards = [
       picture: 'http://lorempixel.com/80/80/people/3/',
     },
     card: {
-      text: "How do I do the second question in Shirshu's assignment?"
+      text: "Is it really possible that animations can be paused in flight to keep the interface always responsive?"
     }
   },
   {
@@ -37,7 +37,7 @@ let cards = [
       picture: 'http://lorempixel.com/80/80/people/4/',
     },
     card: {
-      text: "Reminder: Topcoder competition tonight at 11pm!"
+      text: "Gotta ship this soon!"
     }
   },
   {
@@ -48,7 +48,7 @@ let cards = [
     },
     card: {
       image: "http://i.imgur.com/Ui3oFTh.jpg",
-      text: "Photos from Divij's birthday celebration yesterday night!"
+      text: "If this works, I need a party!"
     }
   },
   {
@@ -58,7 +58,7 @@ let cards = [
       picture: 'http://lorempixel.com/80/80/people/6/',
     },
     card: {
-      text: "Do we need to upload the assignment code or email it?"
+      text: "The Animated library for React Native is pretty amazing, right?"
     }
   },
   {
@@ -69,7 +69,7 @@ let cards = [
     },
     card: {
       image: "http://i.imgur.com/HOXLJJS.jpg",
-      text: "Look who brought some cake to class!"
+      text: "Looks like there is something to eat here."
     }
   },
 ];
