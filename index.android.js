@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-class Shroom extends Component {
+class RNPaperInterface extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('Shroom', () => Shroom);
+AppRegistry.registerComponent('RNPaperInterface', () => RNPaperInterface);

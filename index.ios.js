@@ -5,7 +5,7 @@ import {
 
 let App = require('./app')
 
-class Shroom extends Component {
+class RNPaperInterface extends Component {
   render() {
     return (
       <App />
@@ -13,4 +13,4 @@ class Shroom extends Component {
   }
 }
 
-AppRegistry.registerComponent('Shroom', () => Shroom);
+AppRegistry.registerComponent('RNPaperInterface', () => RNPaperInterface);
