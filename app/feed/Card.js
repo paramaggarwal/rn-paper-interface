@@ -62,7 +62,7 @@ class Card extends Component {
             <Text style={[styles.reactionEmoji, {
               textShadowColor: cardsMap[type].colorDark
             }]}>
-              👏
+              {cardsMap[type].reaction}
             </Text>
           </TouchableHighlight>
           <Text style={[styles.reactionCount, {
