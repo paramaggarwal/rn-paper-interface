@@ -18,6 +18,19 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient'
 
+let cardsMap = {
+  'question': {
+    title: 'QUESTION',
+    colorDark: '#A91400',
+    colorLight: '#FF5505',
+  },
+  'update': {
+    title: 'UPDATE',
+    colorDark: '#032269',
+    colorLight: '#27AFFF',
+  }
+}
+
 let darkRed = "#A91400";
 let brightOrange = "#FF5505";
 
@@ -31,10 +44,14 @@ class Shroom extends Component {
     }
   }
 
-  renderCard() {
+  renderCard(meta) {
+    let {
+      type
+    } = meta
+
     return (
       <LinearGradient 
-        colors={[darkRed, brightOrange]}
+        colors={[cardsMap[type].colorDark, cardsMap[type].colorLight]}
         style={{
           width: Dimensions.get('window').width - 20,
           marginTop: 20,
@@ -42,7 +59,7 @@ class Shroom extends Component {
           marginBottom: 10,
           borderRadius: 10,
           overflow: 'hidden',
-          backgroundColor: 'pink'
+          // backgroundColor: 'pink'
         }}
       >
         <View style={{
@@ -64,10 +81,14 @@ class Shroom extends Component {
             style={styles.badgeSection}
           >
             <View
-              style={styles.badgeSlug}
+              style={[styles.badgeSlug, {
+                backgroundColor: cardsMap[type].colorLight
+              }]}
             >
-              <Text style={styles.badgeText}>
-                QUESTION
+              <Text style={[styles.badgeText,{
+                color: cardsMap[type].colorDark
+              }]}>
+                {cardsMap[type].title}
               </Text>
             </View>
           </View>
@@ -88,7 +109,9 @@ class Shroom extends Component {
               })
             }}
           >
-            <Text style={styles.reactionEmoji}>
+            <Text style={[styles.reactionEmoji, {
+              textShadowColor: cardsMap[type].colorDark
+            }]}>
               👏
             </Text>
           </TouchableHighlight>
@@ -104,13 +127,14 @@ class Shroom extends Component {
   render() {
     return (
       <View style={styles.box}>
+
         <ScrollView
           horizontal={true}
           pagingEnabled={!this.state.isDocked}
           style={[styles.container,{
-            borderWidth: 1,
-            borderColor: 'red',
-            width: this.state.isDocked ? (Dimensions.get('window').width*2) : Dimensions.get('window').width
+            // borderWidth: 1,
+            // borderColor: 'red',
+            width: this.state.isDocked ? Dimensions.get('window').width * 2 : Dimensions.get('window').width
           }, {
             transform: [{
               scale: this.state.isDocked ? 0.5 : 1,
@@ -130,11 +154,24 @@ class Shroom extends Component {
           //   }],
           // }]}
         >
-          {this.renderCard()}
-          {this.renderCard()}
-          {this.renderCard()}
-          {this.renderCard()}
-          {this.renderCard()}
+          {this.renderCard({
+            type: 'update'
+          })}
+          {this.renderCard({
+            type: 'question'
+          })}
+          {this.renderCard({
+            type: 'update'
+          })}
+          {this.renderCard({
+            type: 'question'
+          })}
+          {this.renderCard({
+            type: 'question'
+          })}
+          {this.renderCard({
+            type: 'update'
+          })}
         </ScrollView>
       </View>
     );
