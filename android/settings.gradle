@@ -1,4 +1,4 @@
-rootProject.name = 'Shroom'
+rootProject.name = 'RNPaperInterface'
 
 include ':app'
 include ':react-native-linear-gradient'

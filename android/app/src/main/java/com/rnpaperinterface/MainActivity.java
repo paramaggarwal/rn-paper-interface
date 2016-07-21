@@ -1,4 +1,4 @@
-package com.shroom;
+package com.rnpaperinterface;
 
 import com.facebook.react.ReactActivity;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -11,6 +11,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "Shroom";
+        return "RNPaperInterface";
     }
 }

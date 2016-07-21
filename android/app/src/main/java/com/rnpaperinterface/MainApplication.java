@@ -1,4 +1,4 @@
-package com.shroom;
+package com.rnpaperinterface;
 
 import android.app.Application;
 import android.util.Log;
