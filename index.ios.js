@@ -56,16 +56,40 @@ class Shroom extends Component {
       onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: () => this.setState({scroll: false}),
+      onPanResponderGrant: () => {
+        // this.setState({scroll: false})
+      },
       onPanResponderMove: Animated.event([null, {dx: this.state.pan.x, dy: this.state.pan.y}]),
-      onPanResponderRelease: () => this.setState({scroll: true})
+      onPanResponderRelease: () => {
+        // this.setState({scroll: true})
+
+        if (this._pan.y < -100) {
+          Animated.spring(this.state.pan.y, {
+            toValue: -400
+          }).start();
+        } else {
+          Animated.spring(this.state.pan.y, {
+            toValue: 0
+          }).start(()=>{
+            this.setState({
+              isDocked: false
+            })
+          });          
+        }
+      }
     })
   }
 
   componentDidMount() {
     this.state.pan.addListener((value) => {  // Async listener for state changes  (step1: uncomment)
       console.log(value)
+      this._pan = value
     });
+  }
+
+  componentWillUnmount() {
+    this.state.pan.x.removeAllListeners();  
+    this.state.pan.y.removeAllListeners();
   }
 
   renderCard(meta) {
@@ -158,17 +182,34 @@ class Shroom extends Component {
         <AnimatedScrollView
           horizontal={true}
           pagingEnabled={!this.state.isDocked}
+          scrollEnabled={this.state.scroll}
           style={[styles.container,{
-            // borderWidth: 1,
-            // borderColor: 'red',
-            width: this.state.isDocked ? Dimensions.get('window').width * 2 : Dimensions.get('window').width
+            borderWidth: 1,
+            borderColor: 'red',
+            width: this.state.pan.y.interpolate({
+              inputRange: [-300, 0],
+              outputRange: [Dimensions.get('window').width, Dimensions.get('window').width * 2],
+              extrapolate: 'clamp'
+            }),
           }, {
             transform: [{
-              scale: this.state.isDocked ? 0.5 : 1,
+              scale: this.state.pan.y.interpolate({
+                inputRange: [-300, 0],
+                outputRange: [1, 0.5],
+                extrapolate: 'clamp'
+              }),
             }, {
-              translateX: this.state.isDocked ? -(Dimensions.get('window').width) : 0,
+              translateX: this.state.pan.y.interpolate({
+                inputRange: [-300, 0],
+                outputRange: [0, -(Dimensions.get('window').width)],
+                extrapolate: 'clamp'
+              }),
             }, {
-              translateY: this.state.isDocked ? (Dimensions.get('window').height/2) : 0,
+              translateY: this.state.pan.y.interpolate({
+                inputRange: [-300, 0],
+                outputRange: [0, (Dimensions.get('window').height/2)],
+                extrapolate: 'clamp'
+              }),
             }],
           }]}
           // style={[styles.container,{
