@@ -57,15 +57,33 @@ class Shroom extends Component {
 
   componentWillMount() {
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onStartShouldSetPanResponder: (evt, gestureState) => {
+        // console.log('onStartShouldSetPanResponder', arguments)
+        return true
+      },
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => {
+        // console.log('onStartShouldSetPanResponderCapture', arguments)
+        return true
+      },
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        // console.log('onMoveShouldSetPanResponder', arguments)
+        return true
+      },
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+        // console.log('onMoveShouldSetPanResponderCapture', arguments)
+        return true
+      },
       onPanResponderGrant: () => {
+        // console.log('onPanResponderGrant', arguments)
         // this.setState({scroll: false})
       },
-      onPanResponderMove: Animated.event([null, {dx: this.state.pan.x, dy: this.state.pan.y}]),
+      onPanResponderMove: Animated.event([null, {dx: this.state.pan.x, dy: this.state.pan.y}], {
+        listener: () => {
+          // console.log('onPanResponderMove', arguments)
+        }
+      }),
       onPanResponderRelease: () => {
+        // console.log('onPanResponderRelease', arguments)
         // this.setState({scroll: true})
 
         if (Math.abs(this._pan.y) < panDiff / 3) {
@@ -82,7 +100,7 @@ class Shroom extends Component {
               isDocked: !this.state.isDocked,
               dockAnimation: !this.state.isDocked ? this.state.pan.y.interpolate({
                 inputRange: [-panDiff, 0],
-                outputRange: [1, 0],
+                outputRange: [0, 1],
                 extrapolate: 'clamp'
               }) : this.state.pan.y.interpolate({
                 inputRange: [0, panDiff],
@@ -98,7 +116,7 @@ class Shroom extends Component {
 
   componentDidMount() {
     this.state.pan.addListener((value) => {  // Async listener for state changes  (step1: uncomment)
-      console.log(value)
+      // console.log(value)
       this._pan = value
     });
   }
@@ -197,6 +215,7 @@ class Shroom extends Component {
           horizontal={true}
           pagingEnabled={!this.state.isDocked}
           scrollEnabled={this.state.scroll}
+          directionalLockEnabled={true}
           style={[styles.container,{
             // borderWidth: 1,
             // borderColor: 'red',
