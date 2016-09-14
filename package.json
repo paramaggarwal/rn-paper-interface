@@ -6,13 +6,16 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "15.2.1",
-    "react-native": "0.29.2",
-    "react-native-linear-gradient": "^1.5.12"
+    "react": "15.3.1",
+    "react-native": "github:exponentjs/react-native#sdk-10.0.0",
+    "react-native-linear-gradient": "^1.5.12",
+    "@exponent/vector-icons": "^1.0.1",
+    "exponent": "^10.0.0"
   },
   "devDependencies": {
     "eslint": "^3.1.1",
     "eslint-config-standard": "^5.3.5",
     "eslint-plugin-standard": "^2.0.0"
-  }
+  },
+  "main": "main.js"
 }

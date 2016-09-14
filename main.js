@@ -1,7 +1,5 @@
+import Exponent from 'exponent';
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-} from 'react-native';
 
 let App = require('./app')
 
@@ -13,4 +11,4 @@ class RNPaperInterface extends Component {
   }
 }
 
-AppRegistry.registerComponent('RNPaperInterface', () => RNPaperInterface);
+Exponent.registerRootComponent(RNPaperInterface);

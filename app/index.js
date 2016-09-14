@@ -12,7 +12,8 @@ import {
   LayoutAnimation
 } from 'react-native';
 
-import LinearGradient from 'react-native-linear-gradient'
+import { Components } from 'exponent';
+const { LinearGradient } = Components;
 let AnimatedListView = Animated.createAnimatedComponent(ListView)
 
 let Card = require('./feed/Card');
