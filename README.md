@@ -4,9 +4,15 @@ Implementation of Facebook Paper-like interactive UI in React Native.
 
 Read the blog post: [Building a Facebook Paper-like UI with React Native](https://medium.com/@paramaggarwal/building-a-facebook-paper-like-ui-with-react-native-4a753623d343#.1ou5i5ntm) on Medium.
 
+This is a technical demo and not a library. Feel free to learn from the code and adapt to your use-case.
+
 # Demo
 
-See it in action: [https://vimeo.com/175727390](https://vimeo.com/175727390)
+Run with Exponent: [https://getexponent.com/@community/paper-interface-example](https://getexponent.com/@community/paper-interface-example)
+
+See it on Vimeo: [https://vimeo.com/175727390](https://vimeo.com/175727390)
+
+# GIF
 
 ![project demo](https://github.com/paramaggarwal/rn-paper-interface/raw/master/static/demo.gif)
 
