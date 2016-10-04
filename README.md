@@ -14,9 +14,7 @@ See it on Vimeo: [https://vimeo.com/175727390](https://vimeo.com/175727390)
 
 # GIF
 
-![project demo](https://github.com/paramaggarwal/rn-paper-interface/raw/master/static/demo.gif)
-
-(The image above is a GIF animation that unfortunately does not loop. Please refresh the page to see it loop again.)
+![project demo](static/demo.gif)
 
 # Try it out
 
