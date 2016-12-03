@@ -101,13 +101,6 @@ class App extends Component {
             }),
           },
           {
-            translateX: this.state.dockAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, -(Dimensions.get('window').width)],
-              // extrapolate: 'clamp'
-            }),
-          },
-          {
             translateY: this.state.dockAnimation.interpolate({
               inputRange: [0, 1],
               outputRange: [0, (Dimensions.get('window').height/2)],
@@ -141,6 +134,7 @@ const styles = StyleSheet.create({
   box: {
     flex: 1,
     backgroundColor: 'black',
+    alignItems:'center', 
   },
   container: {
     flex: 1,
